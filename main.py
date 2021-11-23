@@ -92,8 +92,8 @@ def get_series():
     print(f"lista seriali: {series_list}")
 
 def top_titles():
-    for movie in _list:
-        result = sorted(_list, key=movie.num_plays)
+
+        result = sorted(_list, key=lambda movie: movie.num_plays)
         print(result)
     
 
