@@ -9,12 +9,14 @@ class Movies:
         self.num_plays = num_plays
     def __str__(self):
         return f'{self.name}\n rok prod.: {self.year}\n gatunek {self._type}\n liczba odtworzeń: {self.num_plays}'
+    def __repr__(self) -> str:
+        return self.__str__()
 
     def play(self, num_plays):
         num_plays += 1
         return num_plays
 
-class Serials(Movies):
+class Series(Movies):
     def __init__(self, episodes, seasons, name, year, _type, num_plays):
         super().__init__(name, year, _type, num_plays)
         self.episodes = episodes
@@ -33,15 +35,15 @@ class Serials(Movies):
 
            
 _list = []    
-pulp_fiction = Movies("Pulp fiction",1994,'crime', 0)
+pulp_fiction = Movies("Pulp fiction", 1994,'crime', 0)
 killing_zoe = Movies("Killing zoe", 1994, 'crime', 0)
 amelie = Movies("Amelie", 2001, 'romantic-comedy', 0) 
 trainspotting = Movies("Trainspotting", 1995, 'drama', 0)
 Pi = Movies("Pi", 1996,'drama', 0)
 delicatessen = Movies("Delicatessen", 1992, 'comedy/thriller', 0)
-breaking_bad = Serials(3, 45, "breaking bad", 2012, 'crime', 0) 
-queens_gambit = Serials(1, 7, "Queen's gambit", 2020,'moral/comedy', 0)
-mr_bean = Serials(1, 110, "Mr Bean", 1994, 'comedy', 0) 
+breaking_bad = Series(3, 45, "breaking bad", 2012, 'crime', 0)
+queens_gambit = Series(1, 7, "Queen's gambit", 2020,'moral/comedy', 0)
+mr_bean = Series(1, 110, "Mr Bean", 1994, 'comedy', 0)
 _list.append(pulp_fiction)
 _list.append(killing_zoe)
 _list.append(amelie)
@@ -53,56 +55,50 @@ _list.append(queens_gambit)
 _list.append(mr_bean)
 
 movies_list = []
-serials_list = []
+series_list = []
+top_list = []
+
 def get_movies():
     for movie in _list:
         if isinstance(movie,Movies) == True:
             movies_list.append(movie)
 
-def get_serials():
-    for serial in _list:
-        if isinstance(movie,Serials) == True:
-           serials_list.append(serial)
+def get_series():
+    for serie in _list:
+        if isinstance(movie,Series) == True:
+           series_list.append(serie)
 
 def search(name_movie):
-    flag = 0
     for movie in _list:
         if movie.name == name_movie:
-            print(movie)
-            flag = 1
-    for serial in serials_list:
-        if serial.name == name_movie:
-           print(serial)
-           flag = 1
-    if flag == 0:
-        print('Nie posiadamy takiego filmu w zasobach')
-
-def generate_views():
-    movie_views = choice(_list)
-    number_views = randint(0,100)
-    movie_views.num_play = number_views
+            return movie
+    for serie in series_list:
+        if serie.name == name_movie:
+            return serie
+    info = 'Nie posiadamy takiego filmu w zasobach'
+    return info
 
 
-for play in range(30):
-    generate_views()
+def generate_views(plays):
+    for x in range(plays):
+        movie_views = choice(_list)
+        number_views = randint(0,100)
+        movie_views.num_play = number_views
+
+def top_titles():
+    result = reversed(sorted(_list, key = movie.num_plays))
+    return result
 
 
-name_movie = input('Podaj film który Ciebie interesuje: ')
-search(name_movie)
-
-tuples_list_movies = []
-for movie in _list:
-    movie_tuple = (movie.num_plays, movie.name) 
-    tuples_list_movies.append(movie_tuple)
-sorted_list= sorted(tuples_list_movies)    
-print(tuples_list_movies)
-
-get_movies()
-get_serials()
+generate_views(30)
 
 print(_list)
-print(movies_list)
-print(serials_list)
+name_movie = input('Podaj film który Ciebie interesuje: ')
+print(search(name_movie))
+
+print(top_titles)
+
+
 
 
 
